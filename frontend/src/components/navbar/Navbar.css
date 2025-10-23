@@ -1,0 +1,125 @@
+/* Navbar Container */
+.navbar-list-container {
+    width: 100%;
+    height: fit-content;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+/* Title */
+.navbar-list-container h1 {
+    font-size: 28px;
+    margin: 0 0 16px 0;
+    left: 0;
+}
+
+/* navbar link orientation (tabs + login button) */
+.navbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+/* Navigation List */
+.navbar-list {
+    display: flex;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.navbar-list li {
+    margin: 0;
+}
+
+
+/* Navigation Links (styled as tab buttons) */
+.navbar-list a {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-weight: 600;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.navbar-list a:hover {
+    color: var(--text);
+}
+
+/* Active state for navigation links */
+.navbar-link.active {
+    color: var(--text);
+    border-color: transparent;
+    background: linear-gradient(180deg, rgba(91, 140, 255, 0.18) 0%, rgba(91, 140, 255, 0.05) 100%), rgba(91, 140, 255, 0.2);
+    box-shadow: 0 6px 20px rgba(91, 140, 255, 0.3);
+    border-radius: 50px;
+}
+
+/* Profile/Login Section */
+.navbar-profile {
+    display: flex;
+    align-items: center;
+}
+
+/* Login Button */
+.navbar-login-link {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 50px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-weight: 600;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.navbar-login-link:hover {
+    background: linear-gradient(180deg, rgba(91, 140, 255, 0.18) 0%, rgba(91, 140, 255, 0.05) 100%), rgba(91, 140, 255, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar-list-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar-list {
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+    }
+
+    .navbar-profile {
+        align-self: flex-end;
+    }
+}
+
+@media (max-width: 520px) {
+    .navbar-list {
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .navbar-list li {
+        flex: 1 1 auto;
+    }
+
+    .navbar-list a {
+        width: 100%;
+        text-align: center;
+    }
+}
