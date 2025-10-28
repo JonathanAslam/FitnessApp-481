@@ -21,12 +21,13 @@ router.post('/signup', async (req, res) => {
 
         // Hash password (use 10 round salt for hashing, anything more is probably overkill for our case)
         const hashedPassword = await bcrypt.hash(password, 10);
+        
         // Create new user
         user = new User({
             username,
             email,
-            // make sure to store hashed password, not plaintext
-            password: hashedPassword,
+            password: hashedPassword,   // make sure to store hashed password, not plaintext
+
         });
         await user.save();
 
@@ -35,10 +36,11 @@ router.post('/signup', async (req, res) => {
 
         // Set HTTP-only cookie
         res.cookie('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production', //only secure if we are in production, else will be false for security
-            sameSite: 'strict',
-            maxAge: 60 * 60 * 1000, // 1 hour
+            httpOnly: true,                                                   // dont allow js to access, only http
+            secure: process.env.NODE_ENV === "production",                    // only http in production
+            // sameSite: "strict",                                            // prevent CSRF (look up, provided by chatGPT)
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // use none for production and lax (between strict and none) for dev
+            maxAge: 60 * 60 * 1000                                            // 1 hr cookie lifetime, change if needed
         });
         
         // Respond with user info (no token in JSON) since we are using cookies 
@@ -76,10 +78,11 @@ router.post('/login', async (req, res) => {
 
         // using http-only cookies for secure data persistance, keep away from javascript and only allow by http
         res.cookie("token", token, {
-            httpOnly: true,                                 // dont allow js to access, only http
-            secure: process.env.NODE_ENV === "production",  // only http in production
-            sameSite: "strict",                             // prevent CSRF (look up, provided by chatGPT)
-            maxAge: 60 * 60 * 1000                          // 1 hr cookie lifetime, change if needed
+            httpOnly: true,                                                   // dont allow js to access, only http
+            secure: process.env.NODE_ENV === "production",                    // only http in production
+            // sameSite: "strict",                                            // prevent CSRF (look up, provided by chatGPT)
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // use none for production and lax (between strict and none) for dev
+            maxAge: 60 * 60 * 1000                                            // 1 hr cookie lifetime, change if needed
         });
 
         res.json({
@@ -98,8 +101,8 @@ router.post('/logout', async (req, res) => {
     res.clearCookie('token', {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        path: '/' // Important: must match the path used when setting the cookie
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // use none for production and lax (between strict and none) for dev
+        path: '/'                                                         // Important: must match the path used when setting the cookie
      })
 
     res.json({ message: 'Logout successful' });
