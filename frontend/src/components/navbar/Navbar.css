@@ -41,7 +41,7 @@
 
 
 /* Navigation Links (styled as tab buttons) */
-.navbar-list a {
+.navbar-link {
     display: inline-block;
     padding: 10px 16px;
     border-radius: 999px;
@@ -54,7 +54,7 @@
     cursor: pointer;
 }
 
-.navbar-list a:hover {
+.navbar-link:hover {
     color: var(--text);
 }
 
@@ -118,7 +118,7 @@
         flex: 1 1 auto;
     }
 
-    .navbar-list a {
+    .navbar-link {
         width: 100%;
         text-align: center;
     }

@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
 import './Navbar.css'
 import api from '../../api/api'
 
 
-const Navbar = () => {
+const Navbar = ({ onNavigate, currentPage }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
@@ -32,7 +31,7 @@ const Navbar = () => {
             setIsLoggedIn(false);
             alert('Logged out successfully!');
             // force reload page here
-            window.location.href = '/login';   //navigate to login page
+            onNavigate('login');   // Switch to login view
             // set user isLoggedIn to false
         } catch (error) {
             alert('Error logging out: ', error);
@@ -47,41 +46,36 @@ const Navbar = () => {
             <div className='navbar'>
                 <ul className='navbar-list'>
                     <li>
-                        <NavLink
-                            to='/calculator'
-                            end
-                            className={({ isActive }) => 'navbar-link' + (isActive ? ' active' : '')}
+                        <button
+                            onClick={() => onNavigate('calculator')}
+                            className={'navbar-link' + (currentPage === 'calculator' ? ' active' : '')}
                         >
                             Calculator
-                        </NavLink>
+                        </button>
                     </li>
                     <li>
-                        <NavLink
-                            to='/workout'
-                            end
-                            className={({ isActive }) => 'navbar-link' + (isActive ? ' active' : '')}
-
+                        <button
+                            onClick={() => onNavigate('workout')}
+                            className={'navbar-link' + (currentPage === 'workout' ? ' active' : '')}
                         >
                             Workout Finder
-                        </NavLink>
+                        </button>
                     </li>
                     <li>
-                        <NavLink
-                            to='/recipe'
-                            end
-                            className={({ isActive }) => 'navbar-link' + (isActive ? ' active' : '')}
+                        <button
+                            onClick={() => onNavigate('recipe')}
+                            className={'navbar-link' + (currentPage === 'recipe' ? ' active' : '')}
                         >
                             Recipe Ideas
-                        </NavLink>
+                        </button>
                     </li>
                     <li>
-                        <NavLink
-                            to='/nutrition'
-                            end
-                            className={({ isActive }) => 'navbar-link' + (isActive ? ' active' : '')}
+                        <button
+                            onClick={() => onNavigate('nutrition')}
+                            className={'navbar-link' + (currentPage === 'nutrition' ? ' active' : '')}
                         >
                             Nutrition Facts
-                        </NavLink>
+                        </button>
                     </li>
                 </ul>
 
@@ -94,7 +88,7 @@ const Navbar = () => {
                 ) : (
                     // is not logged in --> show login
                     <div className="navbar-profile">
-                        <NavLink to='/login' className='navbar-login-link'>Login</NavLink>
+                        <button onClick={() => onNavigate('login')} className='navbar-login-link'>Login</button>
                     </div>
                 )}
             </div>

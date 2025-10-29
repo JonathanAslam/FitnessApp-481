@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import './AppContent.css'
-import { useLocation } from 'react-router-dom';
 import Navbar from '../../components/navbar/Navbar';
 import Calculator from '../calculator/Calculator'
 import Workout from '../workout/Workout';
@@ -14,9 +13,7 @@ import { Analytics } from "@vercel/analytics/react"        // vercel analytics
 
 
 const AppContent = () => {
-    const location = useLocation();
-    
-    //set to fetchdata.data --> access user data by profile.userData."keyname"
+    const [currentPage, setCurrentPage] = useState('calculator'); // Default page
     const [profile, setProfile] = useState(null);
 
     // fetch profile one time
@@ -27,9 +24,9 @@ const AppContent = () => {
                 const fetchResult = await api.get('/user/profile'); // cookie automatically sent
                 if (!fetchResult) {
                     console.log("No user found")
-                } 
+                }
                 setProfile(fetchResult.data)
-                
+
             } catch (error) {
                 console.log("Error fetching profile: ", error);
             }
@@ -38,36 +35,34 @@ const AppContent = () => {
     }, []); //only want to run one time, so empty dependency array. if we want to run multiple times on change, put the value to listen to here
 
     const renderContent = () => {
-        switch (location.pathname) {
-            case '/calculator':
+        switch (currentPage) {
+            case 'calculator':
                 return <Calculator />;
-            case '/workout':
+            case 'workout':
                 return <Workout />;
-            case '/recipe':
+            case 'recipe':
                 return <Recipe />;
-            case '/nutrition':
+            case 'nutrition':
                 return <Nutrition />;
-            case '/login':
+            case 'login':
                 return <Login />;
-            case '/':
-                return <Calculator />; // Default to Calculator
             default:
-                return <div>404 - Page not found</div>;
+                return <Calculator />; // Default to Calculator, acts as the home page
         }
     };
 
-
     return (
         <div className="app-container">
-            <Navbar />
+            {/* currentPage passed to navbar component defining which page is going to be displayed. Should prevent loading issues with page changes and reloads on render + vercel hosting */}
+            <Navbar onNavigate={setCurrentPage} currentPage={currentPage} />
             <main className="content-area">
                 {/* display username, incase it is undefined we dont want to display anything*/}
                 {profile?.userData?.username && (
-                    <h1>Welcome, {profile.userData.username}!</h1> 
+                    <h1>Welcome, {profile.userData.username}!</h1>
                 )}
                 {renderContent()}
             </main>
-            <Analytics/>
+            <Analytics />
         </div>
     );
 }
