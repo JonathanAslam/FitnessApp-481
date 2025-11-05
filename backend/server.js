@@ -24,11 +24,13 @@ const authRoute = require('./routes/auth');
 const userRoute = require('./routes/user');
 const measurementRoute = require('./routes/measurement');
 const nutritionRoute = require('./routes/nutrition');   
+const mlServiceRoute = require('./routes/mlService');
 
 app.use("/api/auth", authRoute);  //    /signup, /login, 
 app.use("/api/user", userRoute);  //    /profile
 app.use("/api/measurement", measurementRoute); //    / (get and post for measurement)
 app.use("/api/nutrition", nutritionRoute); //    /analyze
+app.use("/api/ml", mlServiceRoute)  //    /predict 
 
 // simple message when checking if backend port is running to verify
 app.get('/', (req, res) => {

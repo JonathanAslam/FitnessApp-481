@@ -15,8 +15,10 @@ const Calculator = () => {
         bmi: '',
         hypertension: '',
         fitnessGoal: '',
-        fitnessType: ''
+        // fitnessType: ''
     });
+
+    const [mlResponse, setMlResponse] = useState(null);
 
 
     // useEffect to load the user measurement information if a user is signed into site, populate form data
@@ -94,9 +96,20 @@ const Calculator = () => {
 
         // using jwt to auth users, so userId is tied to that, just return the flattened form data with ...formData so we dont have any nested json in our db
         try {
+            // Update mongodb database with user infomration
             const userMeasurement = await api.post("/measurement", payload);
             // console.log("Saved measurement: ", userMeasurement.data);      // DELETE WHEN PRODUCTION
-            // alert("Measurement saved successfully!");       // DELETE WHEN PRODUCTION
+            if (userMeasurement) {
+                alert("Measurement saved successfully!");       // DELETE WHEN PRODUCTION
+            }
+
+            // send data to flask api and store result, display results to user. this uses all the updatedData fields
+            const flaskModelResult = await api.post("/ml/predict", { data: updatedFormData }); // node backend requests data (req.body.data), so make sure to send the form data as data
+            if (flaskModelResult) {
+                alert("sent data to model");
+                // flaskModelResult.data = { prediction: { result: "mock_predicition", confidence: 0.95 } }, so set the mlResponse to flaskModelResult.data.prediction
+                setMlResponse(flaskModelResult.data.prediction);
+            }
         } catch (error) {
             alert("Error while saving form data to database");
         }
@@ -114,7 +127,7 @@ const Calculator = () => {
             bmi: '',
             hypertension: '',
             fitnessGoal: '',
-            fitnessType: ''
+            // fitnessType: ''
         });
     };
 
@@ -122,6 +135,21 @@ const Calculator = () => {
         <div className="container">
             <h3>Calculate BMI</h3>
             <h4>BMI: {formData.bmi}</h4>
+
+
+            {/* display result from ml, currently the app.py returns: 
+                    prediction = {"result": "mock_predicition", "confidence": 0.95}
+                
+                -- therfore we need to access mlResponse.result and mlResponse.confidence to display the information
+            */}
+            {mlResponse && (
+                <div className="ml-result">
+                    <h4>Model Prediction: {mlResponse.result}</h4>
+                    <p>Confidence: {(mlResponse.confidence * 100).toFixed(1)}%</p>
+                </div>
+            )}
+
+            {/* form fields */}
 
             <div className="form">
                 <form onSubmit={handleSubmit} noValidate>
@@ -204,7 +232,7 @@ const Calculator = () => {
                         </div>
                     </div>
 
-                    <div className="form-row">
+                    {/* <div className="form-row">
                         <label>Fitness Type</label>
                         <div className="radio-group">
                             <label className="radio-label">
@@ -228,7 +256,7 @@ const Calculator = () => {
                                 Cardiovascular Fitness
                             </label>
                         </div>
-                    </div>
+                    </div> */}
 
                     <div className="form-row">
                         <label htmlFor="age">Age</label>

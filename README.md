@@ -1,11 +1,20 @@
 # FitnessApp-481
 
+## How to run locally 
+- Open Terminal 1:
+  - run: `npm run dev` in the `root directory` to start the frontend and backend (node)
+- Open Termainl 2:
+  - navigate to the `ml_service folder`
+    - if on mac: start up virtual environment (source .venv/bin/activate) then run `python3 app.py`
+    - if on windows: ???? (update later)
+
+
 ## Render
 - Build Command: Render runs this command to build your app before each deploy.
-- - npm install 
+  - npm install 
 
 - Start Command: Render runs this command to start your app with each deploy.
-- - npm start
+  - npm start
 
 
 ## Nutrition API Setup
