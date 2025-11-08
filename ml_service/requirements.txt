@@ -1,0 +1,6 @@
+# list requirements for ml model, mainly used to specify versions for reproducibility
+
+scikit-learn==1.6.1
+
+
+# install with pip install -r requirements.txt when venv is activated

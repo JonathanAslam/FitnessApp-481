@@ -10,12 +10,24 @@
     margin-bottom: 24px;
 }
 
+/* Heading format */
+
+.nav-heading {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+
 /* Title */
-.navbar-list-container h1 {
+.nav-heading h1 {
     font-size: 28px;
     margin: 0 0 16px 0;
     left: 0;
 }
+
+
+
 
 /* navbar link orientation (tabs + login button) */
 .navbar {

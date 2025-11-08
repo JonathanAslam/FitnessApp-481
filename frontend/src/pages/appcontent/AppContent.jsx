@@ -39,7 +39,7 @@ const AppContent = () => {
 
             // for all pages, pass the fetched user profile so the pages can access the profile info such as userData._id, make sure
             case 'calculator':
-                return <Calculator profile={profile}/>;
+                return <Calculator profile={profile} />;
             case 'workout':
                 return <Workout />;
             case 'recipe':
@@ -55,15 +55,13 @@ const AppContent = () => {
 
     return (
         <div className="app-container">
-            {/* currentPage passed to navbar component defining which page is going to be displayed. Should prevent loading issues with page changes and reloads on render + vercel hosting */}
+
             <Navbar onNavigate={setCurrentPage} currentPage={currentPage} />
+
             <main className="content-area">
-                {/* display username, incase it is undefined we dont want to display anything*/}
-                {profile?.userData?.username && (
-                    <h1>Welcome, {profile.userData.username}!</h1>
-                )}
                 {renderContent()}
             </main>
+
             <Analytics />
         </div>
     );
