@@ -4,6 +4,7 @@ import api from '../../api/api'
 
 
 const Navbar = ({ onNavigate, currentPage }) => {
+    const [user, setUser] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
@@ -14,13 +15,12 @@ const Navbar = ({ onNavigate, currentPage }) => {
                 //if the fetch works, then setIsLoggedIn to true
                 if (fetchResult) {
                     setIsLoggedIn(true);
+                    setUser(fetchResult.data);
                 }
             } catch (error) {
                 console.log("Error fetching user: ", error) // dont use error since this will be ran many times
                 setIsLoggedIn(false); // Explicitly set to false if fetch fails
             }
-
-
         }
         fetchUser();
     }, []);
@@ -39,8 +39,13 @@ const Navbar = ({ onNavigate, currentPage }) => {
 
     return (
         <div className='navbar-list-container'>
-            {/* title */}
-            <h1>Fitness Application</h1>
+            {/* top heading */}
+            <div className='nav-heading'>
+                <h1>Fitness Application</h1>
+                {user?.userData?.username && (
+                    <h1>Welcome back, {user.userData.username}!</h1>
+                )}
+            </div>
             {/* links */}
             <div className='navbar'>
                 <ul className='navbar-list'>
@@ -49,7 +54,7 @@ const Navbar = ({ onNavigate, currentPage }) => {
                             onClick={() => onNavigate('calculator')}
                             className={'navbar-link' + (currentPage === 'calculator' ? ' active' : '')}
                         >
-                            Calculator
+                            AI Assessment
                         </button>
                     </li>
                     <li>
