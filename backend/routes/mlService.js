@@ -3,6 +3,42 @@ const router = express.Router();
 const auth = require('../middleware/authMiddleware'); // JWT middleware for auth
 const axios = require('axios');     // cant use api from frontend here, just use axios
 
+
+
+// create a route to ping the flask server inorder to start it up on Render deployment
+// no auth needed, want this to ping every time someone launches the website in order to keep uptime as long as possible
+router.get("/ping-server", async (req, res) => {
+    try {
+        // default flask route, just to ping server. 
+        const flaskResponse = await axios.get(`${process.env.FLASK_URL}/flask`);
+        res.json({
+            message: "Flask server is reachable.",
+            status: flaskResponse.status
+        });
+    } catch (error) {
+        console.error("Error pinging Flask server: ", error.message);
+
+        // If Flask server is not reachable
+        if (error.code === 'ECONNREFUSED') {
+            console.error('[mlService] Connection refused when contacting Flask at', process.env.FLASK_URL);
+            res.status(503).json({
+                message: "ML service is not available",
+                error: "Could not connect to prediction service"
+            });
+        } else {
+            // Generic server error
+            console.error('[mlService] Unexpected error:', error);
+            res.status(500).json({ 
+                message: "Internal server error", 
+                error: error.message
+            })
+        }
+    }
+});
+
+
+
+
 // create an async function to POST to flask server
 router.post("/predict", auth, async (req , res) => {
     try {

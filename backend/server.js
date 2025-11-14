@@ -33,6 +33,7 @@ app.use("/api/nutrition", nutritionRoute); //    /analyze
 app.use("/api/ml", mlServiceRoute)  //    /predict 
 
 // simple message when checking if backend port is running to verify
+// called in the App.jsx frontend on launch to keep Render deployment awake
 app.get('/', (req, res) => {
   res.send('Backend is running!');
 });

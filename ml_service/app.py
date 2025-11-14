@@ -31,7 +31,7 @@ except Exception as e:
 
 
 
-# listens to data from nodeJS backend
+# default route, used to startup the render deployment if it is sleeping
 @app.route('/flask', methods=['GET'])
 def index():
     return jsonify({"message": "Flask server is running"})
