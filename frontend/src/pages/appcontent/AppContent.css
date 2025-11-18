@@ -2,9 +2,8 @@
     height: 100%;
     width: 100%;
     /* padding essentailly will act as the width: 60% but this allows the navbar button shadow to not be cut off making it look better when on calculator page */
-    padding: 0 20%;
+    padding: 2% 20%;
     position: relative;
-    top: 30px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
